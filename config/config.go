@@ -271,7 +271,11 @@ func (c *MenderShellConfig) applyDefaults() error {
 		c.Sessions.ExpireAfterIdle = 0
 	} else {
 		if c.Sessions.ExpireAfter > 0 && c.Sessions.ExpireAfterIdle > 0 {
-			log.Warnf("both ExpireAfter and ExpireAfterIdle specified.")
+			log.Warnf("Both ExpireAfter and ExpireAfterIdle are specified; they are mutually exclusive")
+		}
+		if c.Sessions.ExpireAfter == 0 && c.Sessions.ExpireAfterIdle == 0 {
+			log.Infof("Defaulting ExpireAfterIdle to %d minutes", DefaultExpireAfterIdle)
+			c.Sessions.ExpireAfterIdle = DefaultExpireAfterIdle
 		}
 	}
 
